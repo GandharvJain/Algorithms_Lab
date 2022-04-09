@@ -18,7 +18,7 @@ void printChainOrder(const vvl &split, int i, int j) {
 	}
 }
 
-ll matrixChainOrderDP(const vector<ll> &p, bool print_order) {
+ll matrixChainOrderDP(const vector<ll> &p, bool print_order = false) {
 	int n = p.size() - 1;
 	vvl cost(n, vector<ll>(n)), split(n, vector<ll>(n));
 
