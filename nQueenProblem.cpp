@@ -37,7 +37,7 @@ bool recursiveQueenPlacer(vl &Q, ll row) {
 			Q[row] = col;
 
 			if (recursiveQueenPlacer(Q, row + 1))
-				if (!PRINT_ALL || row != 0)
+				if (!PRINT_ALL)
 					return true;
 
 			Q[row] = -1;
