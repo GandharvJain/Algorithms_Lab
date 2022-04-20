@@ -81,7 +81,10 @@ void generate_random_graph(ll v = -1, ll e = -1) {
 }
 void draw_graphs() {
 	cout << flush;
-	system("python3 MinSpanTree/MinSpanTree_out.py 0");
+	string cmd = "python3 MinSpanTree/MinSpanTree_out.py 0 0";
+	if (IS_DIRECTED)
+		cmd += " 1";
+	system(cmd.c_str());
 }
 
 int main() {
