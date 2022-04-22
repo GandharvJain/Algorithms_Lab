@@ -36,8 +36,7 @@ bool recursiveQueenPlacer(vl &Q, ll row) {
 		if (isLegal(Q, row, col)) {
 			Q[row] = col;
 
-			if (recursiveQueenPlacer(Q, row + 1))
-				if (!PRINT_ALL)
+			if (recursiveQueenPlacer(Q, row + 1) && !PRINT_ALL)
 					return true;
 
 			Q[row] = -1;
