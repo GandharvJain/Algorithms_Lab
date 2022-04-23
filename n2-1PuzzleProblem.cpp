@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long int ll;
+typedef int ll;
 typedef vector<ll> vl;
 typedef vector<vl> vvl;
 
@@ -46,6 +46,13 @@ public:
 		if (parent != NULL)
 			parent->printMoveSequence();
 		printBoard();
+	}
+	string toString() {
+		string str = "";
+		for (auto row : board)
+			for (auto tile : row)
+				str += to_string(tile) + "|";
+		return str;
 	}
 };
 
@@ -103,8 +110,8 @@ public:
 void solvePuzzle(const vvl &initial, const vvl &goal) {
 	ll n = initial.size();
 	ll r = n - 1, c = n - 1;
-	int row[] = {0, +1, 0, -1};
-	int col[] = {+1, 0, -1, 0};
+	set<string> visited;					//Store game states in the form of strings
+	int row[] = {0, +1, 0, -1}, col[] = {+1, 0, -1, 0};
 
 	for (ll i = 0; i < n; ++i)				//Find blank tile
 		for (ll j = 0; j < n; ++j)
@@ -114,6 +121,7 @@ void solvePuzzle(const vvl &initial, const vvl &goal) {
 	PriorityQueue live_nodes;
 	GameState *root = new GameState(initial, r, c, r, c, 0, NULL, goal);
 	live_nodes.insert(root);
+	visited.insert(root->toString());
 
 	while (!live_nodes.isEmpty()) {
 		GameState *e_node = live_nodes.extractMin();
@@ -129,7 +137,13 @@ void solvePuzzle(const vvl &initial, const vvl &goal) {
 			ll newR = oldR + row[i], newC = oldC + col[i];
 			if (e_node->isWithinBounds(newR, newC)) {
 				GameState *child_node = new GameState(e_node->board, oldR, oldC, newR, newC, new_lvl, e_node, goal);
-				live_nodes.insert(child_node);
+				string key = child_node->toString();
+				if (visited.count(key) == 0) {
+					live_nodes.insert(child_node);
+					visited.insert(key);
+				}
+				else
+					delete child_node;
 			}
 		}
 	}
@@ -138,16 +152,16 @@ void solvePuzzle(const vvl &initial, const vvl &goal) {
 int main() {
 	freopen("in.txt", "r", stdin); freopen("out.txt", "w", stdout);
 	vvl init = {
-		{0, 2, 3, 4},
-		{1, 6, 7, 8},
-		{5, 10, 11, 12},
-		{9, 13, 14, 15}
+		{5, 1, 2, 3},
+		{6, BLANK, 7, 4},
+		{9, 10, 11, 8},
+		{13, 14, 15, 12}
 	};
 	vvl goal = {
 		{1, 2, 3, 4},
 		{5, 6, 7, 8},
 		{9, 10, 11, 12},
-		{13, 14, 15, 0}
+		{13, 14, 15, BLANK}
 	};
 
 	solvePuzzle(init, goal);
